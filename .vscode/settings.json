@@ -7,5 +7,10 @@
   "[rust]": {
     "editor.defaultFormatter": "rust-lang.rust-analyzer",
     "editor.formatOnSave": true
+  },
+  "chat.tools.terminal.autoApprove": {
+    "cargo fmt": true,
+    "cargo test": true,
+    "cargo clippy": true
   }
 }
