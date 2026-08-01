@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>エニアグラム診断</title>
+    <link rel="stylesheet" href="/enneagram/styles.css" integrity="sha384-lK3MXDQS1lvg4jO63EFaGx54LciBndth4Uk3UewZGwwAe+UgMFJ32Gmu5QoROxW/"/>
+  <link rel="modulepreload" href="/enneagram/enneagram.js" crossorigin="anonymous" integrity="sha384-z6o06ocAgHrLHNyoGvlwlyl8rJOtm0jyoP+oMZb7KTUfdB7JgojeGmvZzMk3hyBa"><link rel="preload" href="/enneagram/enneagram_bg.wasm" crossorigin="anonymous" integrity="sha384-KBgIW9hHMUuwp/uD2NvrT5U/9JWDDAnCcZ35NjmbeuI0WfOXm6d68AOjekABhgbt" as="fetch" type="application/wasm"></head>
+  <body>
+    <div id="app"></div>
+  
+<script type="module">
+import init, * as bindings from '/enneagram/enneagram.js';
+const wasm = await init({ module_or_path: '/enneagram/enneagram_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script></body>
+</html>
