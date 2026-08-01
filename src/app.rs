@@ -53,7 +53,8 @@ impl Component for App {
                     && !selection.slight.contains(&item_index)
                     && selection.slight.len() >= 2
                 {
-                    self.message = Some("「少し当てはまる」は最大2個まで選択できます。".to_string());
+                    self.message =
+                        Some("「少し当てはまる」は最大2個まで選択できます。".to_string());
                     return true;
                 }
 
@@ -71,8 +72,10 @@ impl Component for App {
             }
             Msg::NextAxis => {
                 if !self.selections[self.current_axis].is_complete() {
-                    self.message =
-                        Some("この分類軸は「最も」「次に」「少し(1〜2個)」を選んでください。".to_string());
+                    self.message = Some(
+                        "この分類軸は「最も」「次に」「少し(1〜2個)」を選んでください。"
+                            .to_string(),
+                    );
                     return true;
                 }
 
@@ -91,8 +94,10 @@ impl Component for App {
             }
             Msg::Submit => {
                 if !self.selections[self.current_axis].is_complete() {
-                    self.message =
-                        Some("この分類軸は「最も」「次に」「少し(1〜2個)」を選んでください。".to_string());
+                    self.message = Some(
+                        "この分類軸は「最も」「次に」「少し(1〜2個)」を選んでください。"
+                            .to_string(),
+                    );
                     return true;
                 }
 
