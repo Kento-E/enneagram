@@ -39,7 +39,7 @@ fn replacing_rank_for_same_item_keeps_single_active_rank() {
 }
 
 #[test]
-fn reports_incomplete_until_most_next_and_at_least_one_slight_are_selected() {
+fn reports_incomplete_until_most_next_and_two_slight_are_selected() {
     let mut selection = AxisSelection::default();
 
     assert!(!selection.is_complete());
@@ -48,11 +48,14 @@ fn reports_incomplete_until_most_next_and_at_least_one_slight_are_selected() {
     assert!(!selection.is_complete());
 
     assert_assign_ok(&mut selection, Rank::Slight, 2);
+    assert!(!selection.is_complete());
+    assert_assign_ok(&mut selection, Rank::Slight, 3);
 
     assert!(selection.is_complete());
     assert_eq!(selection.rank_of(0), Some(Rank::Most));
     assert_eq!(selection.rank_of(1), Some(Rank::Next));
     assert_eq!(selection.rank_of(2), Some(Rank::Slight));
+    assert_eq!(selection.rank_of(3), Some(Rank::Slight));
 }
 
 #[test]

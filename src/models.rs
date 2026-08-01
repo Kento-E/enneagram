@@ -128,7 +128,7 @@ impl Rank {
         match self {
             Rank::Most => "最も当てはまる",
             Rank::Next => "次に当てはまる",
-            Rank::Slight => "少し当てはまる",
+            Rank::Slight => "少しは当てはまる",
         }
     }
 }
@@ -155,7 +155,7 @@ impl AxisSelection {
     }
 
     pub fn is_complete(&self) -> bool {
-        self.most.is_some() && self.next.is_some() && !self.slight.is_empty()
+        self.most.is_some() && self.next.is_some() && self.slight.len() == 2
     }
 
     pub fn score_for_item(&self, item_index: usize) -> u32 {
@@ -183,7 +183,7 @@ impl AxisSelection {
             }
             Rank::Slight => {
                 if self.slight.len() >= 2 {
-                    return Err("「少し当てはまる」は最大2個までです。");
+                    return Err("「少しは当てはまる」は2個までです。");
                 }
                 self.slight.push(item_index);
             }

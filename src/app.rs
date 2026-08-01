@@ -53,8 +53,7 @@ impl Component for App {
                     && !selection.slight.contains(&item_index)
                     && selection.slight.len() >= 2
                 {
-                    self.message =
-                        Some("「少し当てはまる」は最大2個まで選択できます。".to_string());
+                    self.message = Some("「少しは当てはまる」は2個まで選択できます。".to_string());
                     return true;
                 }
 
@@ -73,7 +72,7 @@ impl Component for App {
             Msg::NextAxis => {
                 if !self.selections[self.current_axis].is_complete() {
                     self.message = Some(
-                        "この分類軸は「最も」「次に」「少し(1〜2個)」を選んでください。"
+                        "この設問では「最も当てはまる」を1つ、「次に当てはまる」を1つ、「少しは当てはまる」を2つ選んでください。"
                             .to_string(),
                     );
                     return true;
@@ -95,7 +94,7 @@ impl Component for App {
             Msg::Submit => {
                 if !self.selections[self.current_axis].is_complete() {
                     self.message = Some(
-                        "この分類軸は「最も」「次に」「少し(1〜2個)」を選んでください。"
+                        "この設問では「最も当てはまる」を1つ、「次に当てはまる」を1つ、「少しは当てはまる」を2つ選んでください。"
                             .to_string(),
                     );
                     return true;
@@ -221,7 +220,7 @@ impl App {
                 <div class="rank-guide">
                     <span class="chip rank-most">{"最も当てはまる: 1個 (5点)"}</span>
                     <span class="chip rank-next">{"次に当てはまる: 1個 (4点)"}</span>
-                    <span class="chip rank-slight">{format!("少し当てはまる: 1〜2個 (2点)  現在 {}/2", selection.slight.len())}</span>
+                    <span class="chip rank-slight">{format!("少しは当てはまる: 2個 (各2点)  現在 {}/2", selection.slight.len())}</span>
                 </div>
 
                 <ul class="question-list">
@@ -257,19 +256,19 @@ impl App {
                             html! {
                                 <li class="question-card">
                                     <div class="question-meta">
-                                        <p class="type-label">{item.enneagram_type.label()}</p>
+                                        <p class="type-label">{format!("選択肢 {}", idx + 1)}</p>
                                         <p class="rank-status">{format!("選択状態: {}", active_label)}</p>
                                     </div>
                                     <p class="question-text">{&item.text}</p>
                                     <div class="rank-buttons">
-                                        <button class={classes!("rank-btn", "rank-most", most_active.then_some("is-active"))} onclick={on_most}>{"最も"}</button>
-                                        <button class={classes!("rank-btn", "rank-next", next_active.then_some("is-active"))} onclick={on_next}>{"次に"}</button>
+                                        <button class={classes!("rank-btn", "rank-most", most_active.then_some("is-active"))} onclick={on_most}>{"最も当てはまる"}</button>
+                                        <button class={classes!("rank-btn", "rank-next", next_active.then_some("is-active"))} onclick={on_next}>{"次に当てはまる"}</button>
                                         <button
                                             class={classes!("rank-btn", "rank-slight", slight_active.then_some("is-active"))}
                                             onclick={on_slight}
                                             disabled={slight_disabled}
                                         >
-                                            {"少し"}
+                                            {"少しは当てはまる"}
                                         </button>
                                     </div>
                                 </li>
