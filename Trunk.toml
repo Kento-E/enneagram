@@ -1,7 +1,7 @@
 [build]
 target = "index.html"
 dist = "dist"
-filehash = false
+filehash = true
 public_url = "/"
 
 [serve]
