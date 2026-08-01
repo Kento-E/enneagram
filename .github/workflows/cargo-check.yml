@@ -30,3 +30,12 @@ jobs:
 
       - name: Cargo check
         run: cargo check
+
+      - name: Cargo fmt check
+        run: cargo fmt --all --check
+
+      - name: Cargo clippy
+        run: cargo clippy --all-targets --all-features -- -D warnings
+
+      - name: Cargo test
+        run: cargo test --all-targets --all-features
