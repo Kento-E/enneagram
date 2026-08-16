@@ -169,8 +169,7 @@ impl App {
     fn view_questionnaire(&self, ctx: &Context<Self>) -> Html {
         let axis_total = self.questions.len();
         let axis_index = self.current_axis;
-        let axis_number = axis_index + 1;
-        let progress_pct = (axis_number as f64 / axis_total as f64) * 100.0;
+        let (completed_axes, progress_pct) = completed_axis_progress(&self.selections, axis_total);
         let axis = &self.questions[axis_index];
         let selection = &self.selections[axis_index];
         let is_last = axis_index + 1 == axis_total;
@@ -201,9 +200,9 @@ impl App {
                     }
                 }
 
-                <div class="progress-wrap" role="progressbar" aria-valuenow={axis_number.to_string()} aria-valuemin="1" aria-valuemax={axis_total.to_string()}>
+                <div class="progress-wrap" role="progressbar" aria-valuenow={completed_axes.to_string()} aria-valuemin="0" aria-valuemax={axis_total.to_string()}>
                     <div class="progress-top">
-                        <strong>{format!("進捗 {}/{}", axis_number, axis_total)}</strong>
+                        <strong>{format!("進捗 {}/{}", completed_axes, axis_total)}</strong>
                         <span>{axis.axis.label()}</span>
                     </div>
                     <div class="progress-track">
@@ -352,6 +351,36 @@ impl App {
                 </div>
             </div>
         }
+    }
+}
+
+fn completed_axis_progress(selections: &[AxisSelection], total: usize) -> (usize, f64) {
+    let completed_axes = selections
+        .iter()
+        .filter(|selection| selection.is_complete())
+        .count();
+    let progress_pct = if total == 0 {
+        0.0
+    } else {
+        (completed_axes as f64 / total as f64) * 100.0
+    };
+
+    (completed_axes, progress_pct)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::completed_axis_progress;
+    use crate::models::AxisSelection;
+
+    #[test]
+    fn progress_starts_empty_until_any_axis_is_completed() {
+        let selections = vec![AxisSelection::default(); 7];
+
+        let (completed_axes, progress_pct) = completed_axis_progress(&selections, 7);
+
+        assert_eq!(completed_axes, 0);
+        assert_eq!(progress_pct, 0.0);
     }
 }
 
