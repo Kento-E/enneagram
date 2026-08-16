@@ -1,3 +1,5 @@
+use wasm_bindgen_futures::JsFuture;
+use web_sys::window;
 use yew::prelude::*;
 
 use crate::models::{AxisSelection, DiagnosisResult, EnneagramType, Rank, StoredResult};
@@ -11,6 +13,7 @@ pub struct App {
     current_result: Option<DiagnosisResult>,
     stored_result: Option<StoredResult>,
     show_stored_result: bool,
+    shared_type: Option<EnneagramType>,
     message: Option<String>,
     show_explanation: bool,
 }
@@ -24,6 +27,7 @@ pub enum Msg {
     ResetForm,
     ShowStoredResult,
     BackToForm,
+    CopyShareUrl,
     CloseExplanation,
 }
 
@@ -35,6 +39,7 @@ impl Component for App {
         let questions = build_questions();
         let selections = vec![AxisSelection::default(); questions.len()];
         let stored_result = load_result();
+        let shared_type = shared_type_from_url();
 
         Self {
             questions,
@@ -42,7 +47,8 @@ impl Component for App {
             current_axis: 0,
             current_result: None,
             stored_result,
-            show_stored_result: false,
+            show_stored_result: shared_type.is_some(),
+            shared_type,
             message: None,
             show_explanation: true,
         }
@@ -132,6 +138,20 @@ impl Component for App {
             }
             Msg::BackToForm => {
                 self.show_stored_result = false;
+                self.shared_type = None;
+                true
+            }
+            Msg::CopyShareUrl => {
+                if let Some(result) = self.active_result() {
+                    let url = share_url(result.top_types[0]);
+                    if let Some(browser_window) = window() {
+                        let clipboard = browser_window.navigator().clipboard();
+                        wasm_bindgen_futures::spawn_local(async move {
+                            let _ = JsFuture::from(clipboard.write_text(&url)).await;
+                        });
+                        self.message = Some("共有URLをコピーしました。".to_string());
+                    }
+                }
                 true
             }
             Msg::CloseExplanation => {
@@ -142,7 +162,7 @@ impl Component for App {
     }
 
     fn view(&self, ctx: &Context<Self>) -> Html {
-        if self.show_explanation {
+        if self.show_explanation && self.shared_type.is_none() {
             return self.view_explanation(ctx);
         }
 
@@ -168,6 +188,12 @@ impl Component for App {
 impl App {
     fn active_result(&self) -> Option<DiagnosisResult> {
         if self.show_stored_result {
+            if let Some(shared_type) = self.shared_type {
+                return Some(DiagnosisResult {
+                    scores: [0; 9],
+                    top_types: vec![shared_type],
+                });
+            }
             return self.stored_result.as_ref().map(|saved| DiagnosisResult {
                 scores: saved.scores,
                 top_types: saved.top_types.clone(),
@@ -318,7 +344,7 @@ impl App {
         html! {
             <div class="result-wrap">
                 <h2>{"診断結果"}</h2>
-                <p class="result-main">{format!("候補タイプ: {}", top_labels)}</p>
+                <p class="result-main">{format!("優位なタイプ: {}", top_labels)}</p>
 
                 <div class="profiles">
                     {
@@ -333,25 +359,51 @@ impl App {
                     }
                 </div>
 
-                <h3>{"タイプ別スコア"}</h3>
-                <div class="bar-chart" aria-label="タイプ別スコアの横棒グラフ">
-                    {
-                        for EnneagramType::ALL.iter().map(|t| {
-                            let score = result.scores[t.index()];
-                            let width = (score as f64 / max_score as f64) * 100.0;
-
-                            html! {
-                                <div class="bar-row">
-                                    <span class="bar-label">{t.label()}</span>
-                                    <div class="bar-track">
-                                        <div class="bar-fill" style={format!("width: {:.2}%;", width)}></div>
-                                    </div>
-                                    <span class="bar-value">{score}</span>
+                {
+                    if result.scores.iter().any(|score| *score > 0) {
+                        html! {
+                            <div class="share-box">
+                                <label for="share-url">{"共有URL"}</label>
+                                <div class="share-controls">
+                                    <input id="share-url" value={share_url(result.top_types[0])} readonly=true />
+                                    <button class="ghost-btn" onclick={ctx.link().callback(|_| Msg::CopyShareUrl)}>{"URLをコピー"}</button>
                                 </div>
-                            }
-                        })
+                            </div>
+                        }
+                    } else {
+                        html! {}
                     }
-                </div>
+                }
+
+                {
+                    if result.scores.iter().any(|score| *score > 0) {
+                        html! {
+                            <>
+                                <h3>{"タイプ別スコア"}</h3>
+                                <div class="bar-chart" aria-label="タイプ別スコアの横棒グラフ">
+                                    {
+                                        for EnneagramType::ALL.iter().map(|t| {
+                                            let score = result.scores[t.index()];
+                                            let width = (score as f64 / max_score as f64) * 100.0;
+
+                                            html! {
+                                                <div class="bar-row">
+                                                    <span class="bar-label">{t.label()}</span>
+                                                    <div class="bar-track">
+                                                        <div class="bar-fill" style={format!("width: {:.2}%;", width)}></div>
+                                                    </div>
+                                                    <span class="bar-value">{score}</span>
+                                                </div>
+                                            }
+                                        })
+                                    }
+                                </div>
+                            </>
+                        }
+                    } else {
+                        html! {}
+                    }
+                }
 
                 <p class="notice">
                     {"この診断表によるタイプ判別の精度には限界があり、参考情報として活用してください。より正確な判定には専門家によるカウンセリング等が推奨されます。"}
@@ -436,6 +488,40 @@ fn calculate_result(
         .collect::<Vec<_>>();
 
     DiagnosisResult { scores, top_types }
+}
+
+fn shared_type_from_url() -> Option<EnneagramType> {
+    let search = window()?.location().search().ok()?;
+    let value = search
+        .trim_start_matches('?')
+        .split('&')
+        .find_map(|part| part.strip_prefix("type="))?
+        .parse::<usize>()
+        .ok()?;
+
+    EnneagramType::ALL.get(value.checked_sub(1)?).copied()
+}
+
+fn share_url(enneagram_type: EnneagramType) -> String {
+    let Some(browser_window) = window() else {
+        return format!("?type={}", enneagram_type.index() + 1);
+    };
+    let Ok(origin) = browser_window.location().origin() else {
+        return format!("?type={}", enneagram_type.index() + 1);
+    };
+    let Ok(pathname) = browser_window.location().pathname() else {
+        return format!(
+            "{}/?type={}",
+            origin.trim_end_matches('/'),
+            enneagram_type.index() + 1
+        );
+    };
+    format!(
+        "{}{}?type={}",
+        origin.trim_end_matches('/'),
+        pathname,
+        enneagram_type.index() + 1
+    )
 }
 
 #[cfg(test)]
