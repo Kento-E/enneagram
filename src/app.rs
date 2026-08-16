@@ -12,6 +12,7 @@ pub struct App {
     stored_result: Option<StoredResult>,
     show_stored_result: bool,
     message: Option<String>,
+    show_explanation: bool,
 }
 
 pub enum Msg {
@@ -23,6 +24,7 @@ pub enum Msg {
     ResetForm,
     ShowStoredResult,
     BackToForm,
+    CloseExplanation,
 }
 
 impl Component for App {
@@ -42,6 +44,7 @@ impl Component for App {
             stored_result,
             show_stored_result: false,
             message: None,
+            show_explanation: true,
         }
     }
 
@@ -131,10 +134,18 @@ impl Component for App {
                 self.show_stored_result = false;
                 true
             }
+            Msg::CloseExplanation => {
+                self.show_explanation = false;
+                true
+            }
         }
     }
 
     fn view(&self, ctx: &Context<Self>) -> Html {
+        if self.show_explanation {
+            return self.view_explanation(ctx);
+        }
+
         let content = if let Some(result) = self.active_result() {
             self.view_result(ctx, &result)
         } else {
@@ -352,6 +363,33 @@ impl App {
             </div>
         }
     }
+
+    fn view_explanation(&self, ctx: &Context<Self>) -> Html {
+        html! {
+            <main class="page">
+                <section class="panel">
+                    <header class="panel-header">
+                        <h1>{"エニアグラム診断"}</h1>
+                    </header>
+                    <div class="explanation-dialog">
+                        <div class="explanation-content">
+                            <h2>{"エニアグラムについて"}</h2>
+                            <p>
+                                {"エニアグラムとは、人間の性格を9つのタイプに分類し、それぞれの思考・行動パターンを明らかにする性格診断の手法です。"}
+                                <br/>
+                                {"7つの質問に、それぞれ9つの選択肢があります。"}
+                                <br/>
+                                {"その中で特にあなたの性格に当てはまるもの1位、2位、3位（2つ）の計4つを選んでください。"}
+                            </p>
+                            <button class="primary-btn" onclick={ctx.link().callback(|_| Msg::CloseExplanation)}>
+                                {"診断を開始する"}
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        }
+    }
 }
 
 fn completed_axis_progress(selections: &[AxisSelection], total: usize) -> (usize, f64) {
@@ -366,22 +404,6 @@ fn completed_axis_progress(selections: &[AxisSelection], total: usize) -> (usize
     };
 
     (completed_axes, progress_pct)
-}
-
-#[cfg(test)]
-mod tests {
-    use super::completed_axis_progress;
-    use crate::models::AxisSelection;
-
-    #[test]
-    fn progress_starts_empty_until_any_axis_is_completed() {
-        let selections = vec![AxisSelection::default(); 7];
-
-        let (completed_axes, progress_pct) = completed_axis_progress(&selections, 7);
-
-        assert_eq!(completed_axes, 0);
-        assert_eq!(progress_pct, 0.0);
-    }
 }
 
 fn calculate_result(
@@ -405,4 +427,20 @@ fn calculate_result(
         .collect::<Vec<_>>();
 
     DiagnosisResult { scores, top_types }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::completed_axis_progress;
+    use crate::models::AxisSelection;
+
+    #[test]
+    fn progress_starts_empty_until_any_axis_is_completed() {
+        let selections = vec![AxisSelection::default(); 7];
+
+        let (completed_axes, progress_pct) = completed_axis_progress(&selections, 7);
+
+        assert_eq!(completed_axes, 0);
+        assert_eq!(progress_pct, 0.0);
+    }
 }

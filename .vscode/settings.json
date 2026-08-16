@@ -12,5 +12,6 @@
     "cargo fmt": true,
     "cargo test": true,
     "cargo clippy": true
-  }
+  },
+  "cSpell.words": ["Enneagram"]
 }
