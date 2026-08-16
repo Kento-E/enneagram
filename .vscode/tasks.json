@@ -7,6 +7,12 @@
       "command": "rtk trunk serve",
       "isBackground": true,
       "problemMatcher": []
+    },
+    {
+      "label": "Stop local env",
+      "type": "shell",
+      "command": "server_pid=$(lsof -tiTCP:8080 -sTCP:LISTEN); if [[ -n \"$server_pid\" ]]; then kill \"$server_pid\"; fi",
+      "problemMatcher": []
     }
   ]
 }
