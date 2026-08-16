@@ -214,11 +214,14 @@ impl App {
                 <div class="progress-wrap" role="progressbar" aria-valuenow={completed_axes.to_string()} aria-valuemin="0" aria-valuemax={axis_total.to_string()}>
                     <div class="progress-top">
                         <strong>{format!("進捗 {}/{}", completed_axes, axis_total)}</strong>
-                        <span>{axis.axis.label()}</span>
                     </div>
                     <div class="progress-track">
                         <div class="progress-fill" style={format!("width: {:.2}%;", progress_pct)}></div>
                     </div>
+                </div>
+
+                <div class="axis-heading">
+                    <span>{axis.axis.label()}</span>
                 </div>
 
                 <div class="rank-guide">
