@@ -231,7 +231,6 @@ impl App {
                     {
                         for axis.items.iter().enumerate().map(|(idx, item)| {
                             let rank = selection.rank_of(idx);
-                            let active_label = rank.map(|r| r.label()).unwrap_or("未選択");
 
                             let most_active = rank == Some(Rank::Most);
                             let next_active = rank == Some(Rank::Next);
@@ -261,7 +260,6 @@ impl App {
                                 <li class="question-card">
                                     <div class="question-meta">
                                         <p class="type-label">{format!("選択肢 {}", idx + 1)}</p>
-                                        <p class="rank-status">{format!("選択状態: {}", active_label)}</p>
                                     </div>
                                     <p class="question-text">{&item.text}</p>
                                     <div class="rank-buttons">
