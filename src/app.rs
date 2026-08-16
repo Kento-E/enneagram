@@ -184,7 +184,7 @@ impl App {
         let next_label = if is_last {
             "結果を見る"
         } else {
-            "次の分類軸へ"
+            "次へ"
         };
 
         html! {
