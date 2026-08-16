@@ -1,5 +1,6 @@
 # エニアグラム診断 (Rust + Yew + WASM)
 
+<https://kento-e.github.io/enneagram/>  
 GitHub Pagesでホスティング可能な、分類軸ごとの強制選択ランキング方式のエニアグラム診断Webフォームです。
 
 ## 特徴
