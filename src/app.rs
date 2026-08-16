@@ -222,9 +222,9 @@ impl App {
                 </div>
 
                 <div class="rank-guide">
-                    <span class="chip rank-most">{"最も当てはまる: 1個 (5点)"}</span>
-                    <span class="chip rank-next">{"次に当てはまる: 1個 (4点)"}</span>
-                    <span class="chip rank-slight">{format!("少しは当てはまる: 2個 (各2点)  現在 {}/2", selection.slight.len())}</span>
+                    <span class="chip rank-most">{"最も当てはまる: 1個"}</span>
+                    <span class="chip rank-next">{"次に当てはまる: 1個"}</span>
+                    <span class="chip rank-slight">{format!("少しは当てはまる: 2個  現在 {}/2", selection.slight.len())}</span>
                 </div>
 
                 <ul class="question-list">
