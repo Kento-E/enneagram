@@ -145,9 +145,7 @@ impl Component for App {
             <main class="page">
                 <section class="panel">
                     <header class="panel-header">
-                        <p class="eyebrow">{"Rust + WebAssembly + Yew"}</p>
                         <h1>{"エニアグラム診断"}</h1>
-                        <p class="subtitle">{"分類軸ごとの強制選択ランキング方式"}</p>
                     </header>
                     {content}
                 </section>
