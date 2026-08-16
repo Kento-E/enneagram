@@ -276,24 +276,82 @@ body {
 
 .profiles {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 10px;
 }
 
 .profile-card {
   border: 1px solid var(--line);
   border-radius: 12px;
-  padding: 12px;
+  padding: 16px;
   background: #fff;
 }
 
+.profile-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.profile-kicker {
+  margin: 0 0 4px;
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
 .profile-card h3 {
-  margin: 0 0 8px;
+  margin: 0;
+}
+
+.profile-number {
+  display: inline-grid;
+  place-items: center;
+  width: 42px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #eaf1ff;
+  color: var(--accent);
+  font-family: "M PLUS 1p", sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
 }
 
 .profile-card p {
   margin: 0;
   line-height: 1.6;
+}
+
+.report-section {
+  margin-top: 16px;
+}
+
+.report-section h4 {
+  margin: 0 0 5px;
+  color: var(--text-sub);
+  font-size: 0.9rem;
+}
+
+.report-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.report-grid .report-section {
+  margin-top: 0;
+  padding-top: 12px;
+  border-top: 1px solid #edf1f7;
+}
+
+.source-note {
+  margin: 12px 0 0;
+  color: var(--text-sub);
+  font-size: 0.85rem;
+}
+
+.source-note a {
+  color: var(--accent);
 }
 
 .bar-chart {
@@ -384,6 +442,10 @@ body {
   .panel {
     border-radius: 14px;
     padding: 14px;
+  }
+
+  .report-grid {
+    grid-template-columns: 1fr;
   }
 
   .bar-row {
