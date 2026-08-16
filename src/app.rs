@@ -349,10 +349,38 @@ impl App {
                 <div class="profiles">
                     {
                         for result.top_types.iter().map(|t| {
+                            let profile = t.profile();
                             html! {
                                 <article class="profile-card">
-                                    <h3>{t.label()}</h3>
-                                    <p>{t.profile_placeholder()}</p>
+                                    <div class="profile-heading">
+                                        <div>
+                                            <p class="profile-kicker">{"あなたの優位タイプ"}</p>
+                                            <h3>{format!("{}（{}）", t.label(), profile.nickname)}</h3>
+                                        </div>
+                                        <span class="profile-number">{t.index() + 1}</span>
+                                    </div>
+                                    <div class="report-section">
+                                        <h4>{"基本傾向"}</h4>
+                                        <p>{profile.overview}</p>
+                                    </div>
+                                    <div class="report-grid">
+                                        <div class="report-section">
+                                            <h4>{"活かしやすい力"}</h4>
+                                            <p>{profile.strengths}</p>
+                                        </div>
+                                        <div class="report-section">
+                                            <h4>{"つまずきやすい点"}</h4>
+                                            <p>{profile.challenges}</p>
+                                        </div>
+                                        <div class="report-section">
+                                            <h4>{"対人関係の傾向"}</h4>
+                                            <p>{profile.relationships}</p>
+                                        </div>
+                                        <div class="report-section">
+                                            <h4>{"成長の視点"}</h4>
+                                            <p>{profile.growth}</p>
+                                        </div>
+                                    </div>
                                 </article>
                             }
                         })
@@ -407,6 +435,11 @@ impl App {
 
                 <p class="notice">
                     {"この診断表によるタイプ判別の精度には限界があり、参考情報として活用してください。より正確な判定には専門家によるカウンセリング等が推奨されます。"}
+                </p>
+                <p class="source-note">
+                    {"タイプ名と特徴の整理は"}
+                    <a href="https://www.enneagram.ne.jp/about/about_type" target="_blank" rel="noopener noreferrer">{"日本エニアグラム学会「各タイプの特徴」"}</a>
+                    {"を参考にしています。"}
                 </p>
 
                 <div class="result-actions">
