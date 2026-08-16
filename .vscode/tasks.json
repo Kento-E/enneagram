@@ -1,0 +1,12 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Boot local env",
+      "type": "shell",
+      "command": "rtk trunk serve",
+      "isBackground": true,
+      "problemMatcher": []
+    }
+  ]
+}
