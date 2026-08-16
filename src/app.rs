@@ -290,8 +290,16 @@ impl App {
                     }
                 }
 
-                <div class="nav-buttons">
-                    <button class="ghost-btn" onclick={ctx.link().callback(|_| Msg::PrevAxis)} disabled={axis_index == 0}>{"戻る"}</button>
+                <div class={classes!("nav-buttons", (axis_index == 0).then_some("is-first"))}>
+                    {
+                        if axis_index > 0 {
+                            html! {
+                                <button class="ghost-btn" onclick={ctx.link().callback(|_| Msg::PrevAxis)}>{"戻る"}</button>
+                            }
+                        } else {
+                            html! {}
+                        }
+                    }
                     <button class="primary-btn" onclick={next_action} disabled={!selection.is_complete()}>{next_label}</button>
                 </div>
             </>

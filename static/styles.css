@@ -248,6 +248,10 @@ body {
   gap: 10px;
 }
 
+.nav-buttons.is-first {
+  justify-content: flex-end;
+}
+
 .primary-btn {
   background: var(--accent);
   color: #fff;
