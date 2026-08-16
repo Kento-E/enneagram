@@ -15,6 +15,14 @@
     "/^sh \\.github/skills/rust-validation/scripts/verify\\.sh$/": {
       "approve": true,
       "matchCommandLine": true
+    },
+    "/^cargo fmt --all && sh \\.github/skills/rust-validation/scripts/verify\\.sh$/": {
+      "approve": true,
+      "matchCommandLine": true
+    },
+    "/^sh \\.github/skills/rust-validation/scripts/verify\\.sh; echo \"EXIT_CODE: \\$\\?\"$/": {
+      "approve": true,
+      "matchCommandLine": true
     }
   },
   "cSpell.words": ["Enneagram"]
