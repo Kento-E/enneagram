@@ -327,6 +327,37 @@ body {
   border-radius: 8px;
 }
 
+.explanation-dialog {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+.explanation-content {
+  text-align: center;
+  max-width: 600px;
+  padding: 40px 20px;
+}
+
+.explanation-content h2 {
+  margin: 0 0 24px;
+  font-size: 1.8rem;
+  font-weight: 900;
+}
+
+.explanation-content p {
+  margin: 0 0 32px;
+  line-height: 1.8;
+  font-size: 1rem;
+  color: var(--text-main);
+}
+
+.explanation-content .primary-btn {
+  font-size: 1rem;
+  padding: 12px 32px;
+}
+
 @keyframes rise {
   from {
     opacity: 0;
