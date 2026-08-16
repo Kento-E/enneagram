@@ -4,14 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>エニアグラム診断</title>
+    <link rel="icon" type="image/svg+xml" href="static/favicon.svg" />
     <link rel="stylesheet" href="/enneagram/styles-97bf9a2d2cde9745.css" integrity="sha384-lK3MXDQS1lvg4jO63EFaGx54LciBndth4Uk3UewZGwwAe+UgMFJ32Gmu5QoROxW/"/>
-  <link rel="modulepreload" href="/enneagram/enneagram-dbd2829f14c3168a.js" crossorigin="anonymous" integrity="sha384-z6o06ocAgHrLHNyoGvlwlyl8rJOtm0jyoP+oMZb7KTUfdB7JgojeGmvZzMk3hyBa"><link rel="preload" href="/enneagram/enneagram-dbd2829f14c3168a_bg.wasm" crossorigin="anonymous" integrity="sha384-AUbEk0fgbbyrLMNqydWoDVa/EcBzmk/WvTStNafw+c2rxDLj6Vfz9p/U7xcd2bs3" as="fetch" type="application/wasm"></head>
+  <link rel="modulepreload" href="/enneagram/enneagram-4bacd148df292114.js" crossorigin="anonymous" integrity="sha384-z6o06ocAgHrLHNyoGvlwlyl8rJOtm0jyoP+oMZb7KTUfdB7JgojeGmvZzMk3hyBa"><link rel="preload" href="/enneagram/enneagram-4bacd148df292114_bg.wasm" crossorigin="anonymous" integrity="sha384-f0umrutJpJiLxUGOgm4UDFJ5vuOyR2UWpCIzUcLbtxHY1GEDBJlbh7I5zf+KeKeh" as="fetch" type="application/wasm"></head>
   <body>
     <div id="app"></div>
   
 <script type="module">
-import init, * as bindings from '/enneagram/enneagram-dbd2829f14c3168a.js';
-const wasm = await init({ module_or_path: '/enneagram/enneagram-dbd2829f14c3168a_bg.wasm' });
+import init, * as bindings from '/enneagram/enneagram-4bacd148df292114.js';
+const wasm = await init({ module_or_path: '/enneagram/enneagram-4bacd148df292114_bg.wasm' });
 
 
 window.wasmBindings = bindings;
