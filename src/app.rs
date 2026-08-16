@@ -181,11 +181,7 @@ impl App {
             ctx.link().callback(|_| Msg::NextAxis)
         };
 
-        let next_label = if is_last {
-            "結果を見る"
-        } else {
-            "次へ"
-        };
+        let next_label = if is_last { "結果を見る" } else { "次へ" };
 
         html! {
             <>
@@ -285,7 +281,7 @@ impl App {
 
                 <div class="nav-buttons">
                     <button class="ghost-btn" onclick={ctx.link().callback(|_| Msg::PrevAxis)} disabled={axis_index == 0}>{"戻る"}</button>
-                    <button class="primary-btn" onclick={next_action}>{next_label}</button>
+                    <button class="primary-btn" onclick={next_action} disabled={!selection.is_complete()}>{next_label}</button>
                 </div>
             </>
         }
