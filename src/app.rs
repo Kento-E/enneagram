@@ -266,14 +266,14 @@ impl App {
                                     </div>
                                     <p class="question-text">{&item.text}</p>
                                     <div class="rank-buttons">
-                                        <button class={classes!("rank-btn", "rank-most", most_active.then_some("is-active"))} onclick={on_most}>{"最も当てはまる"}</button>
-                                        <button class={classes!("rank-btn", "rank-next", next_active.then_some("is-active"))} onclick={on_next}>{"次に当てはまる"}</button>
+                                        <button class={classes!("rank-btn", "rank-most", most_active.then_some("is-active"))} onclick={on_most}>{Rank::Most.label()}</button>
+                                        <button class={classes!("rank-btn", "rank-next", next_active.then_some("is-active"))} onclick={on_next}>{Rank::Next.label()}</button>
                                         <button
                                             class={classes!("rank-btn", "rank-slight", slight_active.then_some("is-active"))}
                                             onclick={on_slight}
                                             disabled={slight_disabled}
                                         >
-                                            {"少しは当てはまる"}
+                                            {Rank::Slight.label()}
                                         </button>
                                     </div>
                                 </li>
